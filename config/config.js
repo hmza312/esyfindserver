@@ -5,8 +5,8 @@ const config={
     },
     default : {
         SECRET: 'mysecretkey',
-        // DATABASE: 'mongodb://localhost:27017/Users'
-        DATABASE: 'mongodb+srv://maryam:maryam@cluster0.812je.mongodb.net/<dbname>?retryWrites=true&w=majority'
+        DATABASE: 'mongodb://localhost:27017/Users'
+        // DATABASE: 'mongodb+srv://maryam:maryam@cluster0.812je.mongodb.net/<dbname>?retryWrites=true&w=majority'
 
 
     }
