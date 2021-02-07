@@ -9,7 +9,7 @@ const db=require('./config/config').get(process.env.NODE_ENV);
 
 const app=express();
 // app use
-app.use(bodyparser.urlencoded({extended : false}));
+app.use(bodyparser.urlencoded({extended : true}));
 app.use(bodyparser.json());
 app.use(cookieParser());
 
@@ -29,7 +29,7 @@ app.get('/',function(req,res){
 app.post('/api/register',function(req,res){
   // taking a user
   const newuser=new User(req.body);
-  
+  console.log('fb',req.body)
  if(newuser.password!=newuser.password2)return res.status(400).json({message: "password not match"});
   
   User.findOne({email:newuser.email},function(err,user){

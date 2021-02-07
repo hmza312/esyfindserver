@@ -27,6 +27,12 @@ const userSchema=mongoose.Schema({
         minlength:8
 
     },
+    role:{
+        type:String,
+        required: true,
+      
+
+    },
     token:{
         type: String
     }
