@@ -20,13 +20,14 @@ mongoose.connect(db.DATABASE,{ useNewUrlParser: true,useUnifiedTopology:true },f
     console.log("database is connected");
 });
 
-
-router.get('/',function(req,res){
-    res.status(200).send(`Welcome to login , sign-up api`);
-});
+router.get("/", (req, res) => {
+    res.json({
+      hello: "hi!"
+    });
+  });
 
 // adding new user (sign-up route)
-router.post('/api/register',function(req,res){
+router.post('/register',function(req,res){
   // taking a user
   const newuser=new User(req.body);
   
@@ -46,7 +47,7 @@ router.post('/api/register',function(req,res){
   });
 });
 // login user
-router.post('/api/login', function(req,res){
+router.post('/login', function(req,res){
   let token=req.cookies.auth;
   User.findByToken(token,(err,user)=>{
       if(err) return  res(err);
@@ -76,7 +77,7 @@ router.post('/api/login', function(req,res){
   });
 });
 // get logged in user
-router.get('/api/profile',auth,function(req,res){
+router.get('/profile',auth,function(req,res){
   res.json({
       isAuth: true,
       id: req.user._id,
@@ -85,7 +86,7 @@ router.get('/api/profile',auth,function(req,res){
   })
 });
 //logout user
-router.get('/api/logout',auth,function(req,res){
+router.get('/logout',auth,function(req,res){
   req.user.deleteToken(req.token,(err,user)=>{
       if(err) return res.status(400).send(err);
       res.sendStatus(200);
