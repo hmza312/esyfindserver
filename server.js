@@ -76,11 +76,10 @@ app.post('/api/login', function(req,res){
   });
 });
 // get logged in user
-app.get('/api/profile',auth,function(req,res){
+app.get('/api/profile',function(req,res){
   res.json({
-      isAuth: true,
-      id: req.user._id,
-      email: req.user.email,
+    
+      email: req.body.email,
       
   })
 });
