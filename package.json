@@ -3,23 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "start": "./node_modules/.bin/netlify-lambda serve src",
-    "build": "./node_modules/.bin/netlify-lambda build src"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hmza312/esyfindserver.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/hmza312/esyfindserver/issues"
-  },
-  "engines": {
-    "node": "12.18.3"
-  },
-  "homepage": "https://github.com/hmza312/esyfindserver#readme",
   "dependencies": {
     "@sendgrid/mail": "^7.4.2",
     "aws-sdk": "^2.839.0",
@@ -52,5 +35,24 @@
     "serverless-http": "^2.7.0",
     "static-favicon": "^2.0.0-alpha",
     "uuid": "^3.3.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "./node_modules/.bin/netlify-lambda serve src",
+    "build": "./node_modules/.bin/netlify-lambda build src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hmza312/esyfindserver.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hmza312/esyfindserver/issues"
+  },
+  "engines": {
+    "node": "12.18.3"
+  },
+  "homepage": "https://github.com/hmza312/esyfindserver#readme"
   }
-}
