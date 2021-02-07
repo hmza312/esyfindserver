@@ -2,11 +2,11 @@ const express=require('express');
 const mongoose= require('mongoose');
 const bodyparser=require('body-parser');
 const cookieParser=require('cookie-parser');
-const User=require('./models/user');
-const {auth} =require('./middleware/auth');
-const db=require('./config/config').get(process.env.NODE_ENV);
+const User=require('../models/user');
+const {auth} =require('../middleware/auth');
+const db=require('../config/config').get(process.env.NODE_ENV);
 
-
+const serverless = require("serverless-http");
 const app=express();
 // app use
 app.use(bodyparser.urlencoded({extended : false}));
@@ -21,12 +21,12 @@ mongoose.connect(db.DATABASE,{ useNewUrlParser: true,useUnifiedTopology:true },f
 });
 
 
-app.get('/',function(req,res){
+router.get('/',function(req,res){
     res.status(200).send(`Welcome to login , sign-up api`);
 });
 
 // adding new user (sign-up route)
-app.post('/api/register',function(req,res){
+router.post('/register',function(req,res){
   // taking a user
   const newuser=new User(req.body);
   
@@ -46,7 +46,7 @@ app.post('/api/register',function(req,res){
   });
 });
 // login user
-app.post('/api/login', function(req,res){
+router.post('/login', function(req,res){
   let token=req.cookies.auth;
   User.findByToken(token,(err,user)=>{
       if(err) return  res(err);
@@ -76,7 +76,7 @@ app.post('/api/login', function(req,res){
   });
 });
 // get logged in user
-app.get('/api/profile',auth,function(req,res){
+router.get('/profile',auth,function(req,res){
   res.json({
       isAuth: true,
       id: req.user._id,
@@ -85,7 +85,7 @@ app.get('/api/profile',auth,function(req,res){
   })
 });
 //logout user
-app.get('/api/logout',auth,function(req,res){
+router.get('/logout',auth,function(req,res){
   req.user.deleteToken(req.token,(err,user)=>{
       if(err) return res.status(400).send(err);
       res.sendStatus(200);
@@ -93,8 +93,11 @@ app.get('/api/logout',auth,function(req,res){
 
 }); 
 
-// listening port
-const PORT=process.env.PORT||3000;
-app.listen(PORT,()=>{
-    console.log(`app is live at ${PORT}`);
-});
+
+
+
+
+app.use(`/.netlify/functions/api`, router);
+
+module.exports = app;
+module.exports.handler = serverless(app);
