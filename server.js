@@ -67,7 +67,8 @@ app.post('/api/login', function(req,res){
                   res.cookie('auth',user.token).json({
                       isAuth : true,
                       id : user._id
-                      ,email : user.email
+                      ,email : user.email,
+                      role:user.role
                   });
               });    
           });
