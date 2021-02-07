@@ -6,7 +6,7 @@ const User=require('./models/user');
 const {auth} =require('./middleware/auth');
 const db=require('./config/config').get(process.env.NODE_ENV);
 
-
+const serverless = require("serverless-http");
 const app=express();
 // app use
 app.use(bodyparser.urlencoded({extended : false}));
@@ -98,3 +98,6 @@ const PORT=process.env.PORT||3000;
 app.listen(PORT,()=>{
     console.log(`app is live at ${PORT}`);
 });
+
+module.exports = app;
+module.exports.handler = serverless(app);
