@@ -93,7 +93,7 @@ router.get('/logout',auth,function(req,res){
   });
 
 }); 
-app.use(`/.netlify/functions/api`, router);
+app.use(`/.netlify/functions/index`, router);
 
 
 module.exports = app;
