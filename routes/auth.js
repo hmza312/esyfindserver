@@ -1,29 +1,13 @@
-const express=require('express');
-const mongoose= require('mongoose');
-const bodyparser=require('body-parser');
-const cookieParser=require('cookie-parser');
-const User=require('./models/user');
-const {auth} =require('./middleware/auth');
-const db=require('./config/config').get(process.env.NODE_ENV);
-
-const app=express();
-var BussinesRouter = require('./routes/business');
-var CatelogRouter = require('./routes/catelog');
-var SpecialRouter = require('./routes/special');
-var ReviewRouter = require('./routes/company');
-var ComapnyRouter = require('./routes/review');
-// app use
-app.use(bodyparser.urlencoded({extended : true}));
-app.use(bodyparser.json());
-app.use(cookieParser());
-
-// database connection
-mongoose.Promise=global.Promise;
-mongoose.connect(db.DATABASE,{ useNewUrlParser: true,useUnifiedTopology:true },function(err){
-    if(err) console.log(err);
-    console.log("database is connected");
-});
-
+require('dotenv').config()
+const express = require('express')
+const router = express.Router()
+const { check, validationResult } = require('express-validator')
+const bcrypt = require('bcrypt')
+const cors = require('cors')
+const jwt = require('jsonwebtoken')
+const User = require('../models/user')
+const auth = require('../middleware/auth')
+router.use(cors())
 
 app.get('/',function(req,res){
     res.status(200).send(`Welcome to login , sign-up api`);
@@ -33,7 +17,7 @@ app.get('/',function(req,res){
 app.post('/api/register',function(req,res){
   // taking a user
   const newuser=new User(req.body);
-  console.log('fb',req.body)
+  
  if(newuser.password!=newuser.password2)return res.status(400).json({message: "password not match"});
   
   User.findOne({email:newuser.email},function(err,user){
@@ -71,8 +55,7 @@ app.post('/api/login', function(req,res){
                   res.cookie('auth',user.token).json({
                       isAuth : true,
                       id : user._id
-                      ,email : user.email,
-                      role:user.role
+                      ,email : user.email
                   });
               });    
           });
@@ -81,36 +64,20 @@ app.post('/api/login', function(req,res){
   });
 });
 // get logged in user
-app.get('/api/profile',function(req,res){
+app.get('/api/profile',auth,function(req,res){
   res.json({
-    
-      email: req.body.email,
+      isAuth: true,
+      id: req.user._id,
+      email: req.user.email,
       
   })
 });
 //logout user
 app.get('/api/logout',auth,function(req,res){
-  
-        if(err) return res.status(400).send(err);
-        res.sendStatus(200);
-  
+  req.user.deleteToken(req.token,(err,user)=>{
+      if(err) return res.status(400).send(err);
+      res.sendStatus(200);
+  });
 
-});
-// app.get("/company",auth,read)
-// app.post("/company/create" ,auth,createCompany);
-// app.get("/review/:reviewId" ,auth,readreview,function(req,res){
-//     res.status(200).send(`Welcome to login , sign-up api`);
-// });
-// app.post("/review/create",auth,create);
-// app.get("/review",auth,read)
+}); 
 
-app.use('/company',ComapnyRouter);
-app.use('/review', ReviewRouter);
-app.use('/busines',BussinesRouter);
-app.use('/catelog', CatelogRouter);
-app.use('/special', SpecialRouter);
-// listening port
-const PORT=process.env.PORT||3000;
-app.listen(PORT,()=>{
-    console.log(`app is live at ${PORT}`);
-});
