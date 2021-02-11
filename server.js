@@ -12,6 +12,14 @@ var CatelogRouter = require('./routes/catelog');
 var SpecialRouter = require('./routes/special');
 var ReviewRouter = require('./routes/company');
 var ComapnyRouter = require('./routes/review');
+var ProductRouter = require('./routes/allproduct');
+var BidRouter = require('./routes/bid');
+var CartRouter = require('./routes/cart');
+var CheckoutRouter = require('./routes/checkout');
+var HireRouter = require('./routes/hire');
+var BookRouter = require('./routes/hirebook');
+var RequestRouter = require('./routes/request');
+
 // app use
 app.use(bodyparser.urlencoded({extended : true}));
 app.use(bodyparser.json());
@@ -109,6 +117,14 @@ app.use('/review', ReviewRouter);
 app.use('/busines',BussinesRouter);
 app.use('/catelog', CatelogRouter);
 app.use('/special', SpecialRouter);
+app.use('/products',ProductRouter);
+app.use('/bid', BidRouter);
+app.use('/cart',CartRouter);
+app.use('/checkout', CheckoutRouter);
+app.use('/hire', HireRouter);
+app.use('/book',BidRouter);
+app.use('/request', RequestRouter);
+
 // listening port
 const PORT=process.env.PORT||3000;
 app.listen(PORT,()=>{
